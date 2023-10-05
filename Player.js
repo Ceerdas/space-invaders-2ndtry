@@ -33,7 +33,6 @@ export default class Player {
         this.collideWithWalls();
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
     }
-
     collideWithWalls(){
         if(this.x < 0){
             this.x = 0
@@ -43,8 +42,6 @@ export default class Player {
             this.x = this.canvas.width - this.width;
         }
     }
-
-
 
     move() {
         if (this.rightPressed) {

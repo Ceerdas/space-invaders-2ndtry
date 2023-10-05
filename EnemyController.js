@@ -12,7 +12,6 @@ export default class EnemyController {
     ];
     enemyRows = [];
 
-
     currentDirection = movingDirection.right;
     xVelocity = 0;
     yVelocity = 0;
@@ -27,10 +26,10 @@ export default class EnemyController {
         this.canvas = canvas;
         this.enemyBulletController = enemyBulletController;
         this.playerBulletController = playerBulletController;
-        
-        this. enemyDeathSound = new Audio('sounds/enemy-death.wav');
+
+        this.enemyDeathSound = new Audio('sounds/enemy-death.wav');
         this.enemyDeathSound.volume = 0.2;
-        
+
         this.createEnemies();
     }
 
@@ -43,10 +42,10 @@ export default class EnemyController {
         this.fireBullet();
     }
 
-    collisionDetection(){
+    collisionDetection() {
         this.enemyRows.forEach(enemyRow => {
-            enemyRow.forEach((enemy, enemyIndex)=>{
-                if(this.playerBulletController.collideWith(enemy)){
+            enemyRow.forEach((enemy, enemyIndex) => {
+                if (this.playerBulletController.collideWith(enemy)) {
                     this.enemyDeathSound.currentTime = 0;
                     this.enemyDeathSound.play();
                     enemyRow.splice(enemyIndex, 1);
@@ -57,29 +56,28 @@ export default class EnemyController {
         this.enemyRows = this.enemyRows.filter((enemyRow) => enemyRow.length > 0);
     }
 
-fireBullet(){
-    this.fireBulletTimer--;
-    if(this.fireBulletTimer <= 0){
-        this.fireBulletTimer = this.fireBulletTimerDefaultValue;
-        const allEnemies = this.enemyRows.flat();
-        const enemyIndex = Math.floor(Math.random() * allEnemies.length);
-        const enemy = allEnemies[enemyIndex];
-        this.enemyBulletController.shoot(enemy.x, enemy.y, -3);
-        console.log(enemyIndex);
+    fireBullet() {
+        this.fireBulletTimer--;
+        if (this.fireBulletTimer <= 0) {
+            this.fireBulletTimer = this.fireBulletTimerDefaultValue;
+            const allEnemies = this.enemyRows.flat();
+            const enemyIndex = Math.floor(Math.random() * allEnemies.length);
+            const enemy = allEnemies[enemyIndex];
+            this.enemyBulletController.shoot(enemy.x, enemy.y, -3);
+        }
     }
-}
 
-resetMoveDownTimer(){
-    if(this.moveDownTimer <= 0){
-        this.moveDownTimer = this.moveDownTimerDefault
+    resetMoveDownTimer() {
+        if (this.moveDownTimer <= 0) {
+            this.moveDownTimer = this.moveDownTimerDefault
+        }
     }
-}
 
-    decrementMoveDownTimer(){
-        if(
-this.currentDirection === movingDirection.downLeft ||
-this.currentDirection === movingDirection.downRight
-        ){
+    decrementMoveDownTimer() {
+        if (
+            this.currentDirection === movingDirection.downLeft ||
+            this.currentDirection === movingDirection.downRight
+        ) {
             this.moveDownTimer--;
         }
     }
@@ -89,36 +87,36 @@ this.currentDirection === movingDirection.downRight
             if (this.currentDirection == movingDirection.right) {
                 this.xVelocity = this.defaultXVelocity;
                 this.yVelocity = 0;
-                const mostRightEnemy = enemyRow[enemyRow.length -1];
-                if(mostRightEnemy.x +mostRightEnemy.width >= this.canvas.width){
+                const mostRightEnemy = enemyRow[enemyRow.length - 1];
+                if (mostRightEnemy.x + mostRightEnemy.width >= this.canvas.width) {
                     this.currentDirection = movingDirection.downLeft;
                     break;
                 }
             }
-            else if(this.currentDirection === movingDirection.downLeft){
-                if(this.moveDown(movingDirection.left)){
+            else if (this.currentDirection === movingDirection.downLeft) {
+                if (this.moveDown(movingDirection.left)) {
                     break;
                 }
-            } else if (this.currentDirection === movingDirection.left){
+            } else if (this.currentDirection === movingDirection.left) {
                 this.xVelocity = -this.defaultXVelocity;
                 this.yVelocity = 0;
                 const mostLeftEnemy = enemyRow[0];
-                if(mostLeftEnemy.x <= 0){
+                if (mostLeftEnemy.x <= 0) {
                     this.currentDirection = movingDirection.downRight;
                     break;
                 }
-            } else if (this.currentDirection === movingDirection.downRight){
-                if(this.moveDown(movingDirection.right)){
+            } else if (this.currentDirection === movingDirection.downRight) {
+                if (this.moveDown(movingDirection.right)) {
                     break;
                 }
             }
         }
     }
 
-    moveDown(newDirection){
+    moveDown(newDirection) {
         this.xVelocity = 0;
         this.yVelocity = this.defaultYVelocity;
-        if(this.moveDownTimer <= 0){
+        if (this.moveDownTimer <= 0) {
             this.currentDirection = newDirection;
             return true;
         }
@@ -144,12 +142,7 @@ this.currentDirection === movingDirection.downRight
         });
     }
 
-collideWith(sprite) {
-    return this.enemyRows.flat().some(enemy=>enemy.collideWith(sprite));
-}
-
-
-
-
-
+    collideWith(sprite) {
+        return this.enemyRows.flat().some(enemy => enemy.collideWith(sprite));
+    }
 }
